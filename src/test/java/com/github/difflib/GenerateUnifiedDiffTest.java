@@ -4,23 +4,26 @@ import com.github.difflib.algorithm.DiffException;
 import com.github.difflib.patch.Patch;
 import com.github.difflib.patch.PatchFailedException;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import static java.util.stream.Collectors.joining;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 import org.junit.Test;
+
+import static com.github.difflib.utils.TestUtils.pathToResource;
+import static java.util.stream.Collectors.joining;
+import static org.junit.Assert.*;
 
 public class GenerateUnifiedDiffTest {
 
     public static List<String> fileToLines(String filename) throws FileNotFoundException, IOException {
         List<String> lines = new ArrayList<>();
         String line = "";
-        try (BufferedReader in = new BufferedReader(new FileReader(filename))) {
+        File file = pathToResource(filename).toFile();
+        try (BufferedReader in = new BufferedReader(new FileReader(file))) {
             while ((line = in.readLine()) != null) {
                 lines.add(line);
             }
@@ -106,7 +109,7 @@ public class GenerateUnifiedDiffTest {
     }
 
     private void verify(List<String> origLines, List<String> revLines,
-            String originalFile, String revisedFile) throws DiffException {
+                        String originalFile, String revisedFile) throws DiffException {
         Patch<String> patch = DiffUtils.diff(origLines, revLines);
         List<String> unifiedDiff = UnifiedDiffUtils.generateUnifiedDiff(originalFile, revisedFile,
                 origLines, patch, 10);

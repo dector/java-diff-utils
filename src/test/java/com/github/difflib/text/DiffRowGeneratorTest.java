@@ -1,17 +1,17 @@
 package com.github.difflib.text;
 
 import com.github.difflib.algorithm.DiffException;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
-import static java.util.stream.Collectors.toList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
+
+import static com.github.difflib.utils.TestUtils.pathToResource;
+import static java.util.stream.Collectors.toList;
+import static org.junit.Assert.*;
 
 public class DiffRowGeneratorTest {
 
@@ -308,10 +308,10 @@ public class DiffRowGeneratorTest {
                 .newTag(f -> "**")
                 .build();
 
-        List<String> listOne = Files.lines(new File("target/test-classes/mocks/issue15_1.txt").toPath())
+        List<String> listOne = Files.lines(pathToResource("mocks/issue15_1.txt"))
                 .collect(toList());
 
-        List<String> listTwo = Files.lines(new File("target/test-classes/mocks/issue15_2.txt").toPath())
+        List<String> listTwo = Files.lines(pathToResource("mocks/issue15_2.txt"))
                 .collect(toList());
 
         List<DiffRow> rows = generator.generateDiffRows(listOne, listTwo);

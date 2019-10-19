@@ -15,24 +15,26 @@
  */
 package com.github.difflib.algorithm.jgit;
 
-import static com.github.difflib.DiffUtilsTest.readStringListFromInputStream;
 import com.github.difflib.TestConstants;
 import com.github.difflib.algorithm.DiffAlgorithmListener;
 import com.github.difflib.patch.Patch;
 import com.github.difflib.patch.PatchFailedException;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipFile;
 import org.junit.After;
 import org.junit.AfterClass;
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static com.github.difflib.DiffUtilsTest.readStringListFromInputStream;
+import static com.github.difflib.utils.TestUtils.pathToResource;
+import static org.junit.Assert.*;
+
 /**
- *
  * @author toben
  */
 public class LRHistogramDiffTest {
@@ -58,7 +60,8 @@ public class LRHistogramDiffTest {
 
     @Test
     public void testPossibleDiffHangOnLargeDatasetDnaumenkoIssue26() throws IOException, PatchFailedException {
-        ZipFile zip = new ZipFile(TestConstants.MOCK_FOLDER + "/large_dataset1.zip");
+        File file = pathToResource(TestConstants.MOCK_FOLDER + "/large_dataset1.zip").toFile();
+        ZipFile zip = new ZipFile(file);
         List<String> original = readStringListFromInputStream(zip.getInputStream(zip.getEntry("ta")));
         List<String> revised = readStringListFromInputStream(zip.getInputStream(zip.getEntry("tb")));
 
@@ -84,7 +87,7 @@ public class LRHistogramDiffTest {
 
         List<String> created = patch.applyTo(original);
         assertArrayEquals(revised.toArray(), created.toArray());
-        
+
         assertEquals(50, logdata.size());
     }
 
