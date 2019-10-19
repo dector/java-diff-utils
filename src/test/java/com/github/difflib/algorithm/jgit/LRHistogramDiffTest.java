@@ -28,6 +28,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.github.difflib.DiffUtilsTest.readStringListFromInputStream;
@@ -59,6 +60,7 @@ public class LRHistogramDiffTest {
     }
 
     @Test
+    @Ignore("Issue #57")
     public void testPossibleDiffHangOnLargeDatasetDnaumenkoIssue26() throws IOException, PatchFailedException {
         File file = pathToResource(TestConstants.MOCK_FOLDER + "/large_dataset1.zip").toFile();
         ZipFile zip = new ZipFile(file);
